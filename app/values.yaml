@@ -1,0 +1,23 @@
+odoo:
+  version: 23.2.5
+  namespace: apps
+  releaseName: odoo
+  email: saurabh@gmail.com
+  parameters:
+    odooEmail: saurabh@gmail.com
+    odooPassword: admin
+    smtpHost: ""
+    smtpPort: ""
+    smtpUser: ""
+    smtpPassword: ""
+    smtpProtocol: ""
+    service.type: "ClusterIP"
+    # postgresql.enabled: true
+    postgresql.auth.username: "bn_odoo"
+    postgresql.auth.password: "bn_odoo"
+    postgresql.auth.database: "adoo"
+    postgresql.auth.existingSecret: ""
+    postgresql.architecture: "standalone"
+
+psql:
+  
