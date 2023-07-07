@@ -1,4 +1,5 @@
 odoo:
+  enabled: false
   version: 23.2.5
   namespace: apps
   releaseName: odoo
@@ -12,12 +13,69 @@ odoo:
     smtpPassword: ""
     smtpProtocol: ""
     service.type: "ClusterIP"
-    # postgresql.enabled: true
-    postgresql.auth.username: "bn_odoo"
-    postgresql.auth.password: "bn_odoo"
-    postgresql.auth.database: "adoo"
+    postgresql.enabled: true
+    postgresql.auth.username: "odooUser"
+    postgresql.auth.password: "odoo"
+    postgresql.auth.database: "adooDB"
     postgresql.auth.existingSecret: ""
     postgresql.architecture: "standalone"
 
-psql:
-  
+    # externalDatabase.host: "postgres"
+    # externalDatabase.database: "adoo"
+    # externalDatabase.create: "false"
+    # # non root user
+    # externalDatabase.user: "bn_odoo"
+    # externalDatabase.password: "bn_odoo"
+    # # postgres user password
+    # externalDatabase.postgresqlPostgresPassword: "psql"
+
+vaultwarden:
+  version: 1.0.0
+  enabled: true
+  namespace: apps
+  parameters: 
+    database.type: "sqlite"
+    database.url: ""
+    replicaCount: 1
+    vaultwarden.domain: https://bitwarden.cloud-native.me
+    # vaultwarden.signupDomains: cloud-native.me
+    vaultwarden.admin.enabled: false
+    vaultwarden.admin.token: "sdsafdsffsdfsddsfsfs"
+  replicaCount: 1
+  domain: https://bitwarden.cloud-native.me
+  signupDomains: cloud-native.com
+  adminToken: "sdsafdsffsdfsddsfsfs"
+  database:
+    type: mysql
+    uriOverride: "mysql://warden:Xcn$yG32582@mysql/warden"
+  ingress:
+    enabled: true
+    hostname: "bitwarden.cloud-native.me"
+    tls: true
+    class: "nginx"
+    tlsSecret: web-certs
+  smtp:
+    host: smtp.mailgun.org
+    port: 587
+    username: postmaster@dsds.com
+    password: "*****"
+
+
+
+postgres:
+  enabled: false
+  version: 12.x.x
+  namespace: apps
+  parameters:
+    fullnameOverride: postgres
+    # postgres user password
+    # auth.postgresPassword: psqlPWD
+    # custom user/password and database
+    auth.username: "odoouser"
+    auth.password: "odoo"
+    auth.database: "adoodb"
+
+          # {{- range $name, $value := .Values.postgres.parameters }}
+        # - name: {{ $name }}
+        #   value: {{ $value }}
+        # {{- end }}

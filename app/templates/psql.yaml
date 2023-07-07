@@ -1,27 +1,35 @@
+{{ if .Values.postgres.enabled }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: odoo
+  name: postgres
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-  source:
-    chart: odoo
+  source: 
+    chart: postgresql
     repoURL: https://charts.bitnami.com/bitnami
-    targetRevision: {{.Values.odoo.version}}
+    targetRevision: {{.Values.postgres.version}}
     helm:
-      releaseName: odoo
+      releaseName: postgres
       parameters:
-        {{- range $name, $value := .Values.odoo.parameters }}
-        - name: {{ $name }}
-          value: {{ $value}}
-        {{- end }}
+        - name: auth.username
+          value: odoouser
+        - name: auth.password
+          value: odoo
+        - name: auth.password
+          value: odoo
   destination:
     server: "https://kubernetes.default.svc"
-    namespace: {{.Values.odoo.namespace}}
+    namespace: {{ .Values.postgres.namespace }}
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+{{ end }}

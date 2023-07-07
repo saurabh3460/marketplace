@@ -1,8 +1,8 @@
-{{ if .Values.odoo.enabled }}
+{{ if .Values.vaultwarden.enabled }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: odoo
+  name: vaultwarden
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "1"
@@ -11,19 +11,19 @@ metadata:
 spec:
   project: default
   source:
-    chart: odoo
-    repoURL: https://charts.bitnami.com/bitnami
-    targetRevision: {{.Values.odoo.version}}
+    chart: vaultwarden
+    repoURL: https://gissilabs.github.io/charts/
+    targetRevision: {{ .Values.vaultwarden.version }}
     helm:
-      releaseName: odoo
+      releaseName: vaultwarden
       parameters:
-        {{- range $name, $value := .Values.odoo.parameters }}
+        {{- range $name, $value := .Values.vaultwarden.parameters }}
         - name: {{ $name }}
           value: {{ $value | quote }}
         {{- end }}
   destination:
     server: "https://kubernetes.default.svc"
-    namespace: {{.Values.odoo.namespace}}
+    namespace: {{.Values.vaultwarden.namespace}}
   syncPolicy:
     automated:
       prune: true
